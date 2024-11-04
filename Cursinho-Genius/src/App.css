@@ -41,6 +41,10 @@ body {
     gap: 2vw;
 }
 
+.logoGenius{
+    width: 100%;
+}
+
 .nav_button:hover {
     cursor: pointer;
 }

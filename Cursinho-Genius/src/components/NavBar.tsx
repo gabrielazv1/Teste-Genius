@@ -27,7 +27,7 @@ const NavBar: React.FC = () => {
     return (
         <div>
             <aside id='navbar'>
-                <h1>Study</h1>
+                <img src="https://i.ibb.co/CBs4vht/Logo-Genius.png" alt="" className="logoGenius" />
                 <section id="nav_actions">
                     <div className="nav_button" onClick={() => setSelectedPage('Ínicio')}>
                         <i className="fa-solid fa-house"></i>
