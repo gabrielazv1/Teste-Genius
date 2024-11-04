@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: "Sora", serif;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 1.5vw;
+    background-color: #f3f3f3;
+    overflow: hidden;
+}
+
+#navbar {
+    width: 20vw;
+    height: calc(100vh - 3vw);
+    background-color: #003d4e;
+    color: white;
+    padding: 2vw;
+    border-radius: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.8vw;
+    position: fixed;
+    top: 1.5vw;
+    left: 1.5vw;
+}
+
+#navbar h1 {
+    font-size: 35px;
+}
+
+#nav_actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2vw;
+}
+
+.nav_button:hover {
+    cursor: pointer;
+}
+
+.nav_button {
+    display: flex;
+    align-items: center;
+    gap: 0.7vw;
+}
+
+.nav_button i {
+    font-size: 22px;
+}
+
+.nav_button p {
+    font-size: 18px;
+    font-weight: 200;
+}
+
+#senhora_gif, #garota_gif {
+    width: 100%;
+}
+
+.student_profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+.profile_pic {
+    background-color: #00A69A;
+    height: 2.5vw;
+    width: 2.5vw;
+    border-radius: 50%;
+}
+
+.profile_name {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.ocupation {
+    font-size: 0.6rem;
+    font-weight: 200;
+}
+
+/* Inicio */
+
+#inicio {
+    display: grid;
+    grid-template-areas: "header header header" "container-horario container-horario aside" "container-redacao container-faltas aside";
+    grid-template-columns: 3fr 3fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 1.5vw;
+    width: calc(100vw - 24.5vw);
+    height: calc(100vh - 3vw);
+    margin-left: calc(20vw + 1.5vw);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#container-horario, #container-redacao, #container-faltas, aside {
+    border-radius: 2vw;
+    padding: 1vw;
+    background-color: white;
+}
+
+#header {
+    grid-area: header;
+    font-size: 24px;
+}
+
+#container-horario {
+    grid-area: container-horario;
+}
+
+#container-redacao {
+    grid-area: container-redacao;
+}
+
+#container-faltas {
+    grid-area: container-faltas;
+}
+
+aside {
+    grid-area: aside;
+    width: 17vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+/* Cabecalho */
+
+#data {
+    color: #003D4E;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header_tittle {
+    font-size: 1.8rem;
+}
+
+.header_subtittle {
+    text-align: right;
+    font-size: 1.2rem;
+}
+
+/* Barra de Progresso */
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  .circular-progress {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    margin: 20px;
+  }
+  
+  .circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .mask,
+  .fill {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 50%;
+    clip: rect(0px, 60px, 120px, 0px); /* Configura o clipping para o efeito circular */
+  }
+  
+  .mask.full,
+  .fill {
+    background-color: #00A69A;
+    clip: rect(0px, 60px, 120px, 0px);
+  }
+  
+  .mask.half {
+    clip: rect(0px, 120px, 120px, 60px);
+    background-color: #f0f0f0;
+  }
+  
+  .inside-circle {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #6755AA;
+  }
+  
