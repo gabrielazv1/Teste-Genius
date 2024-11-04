@@ -5,7 +5,7 @@ import Teacher from './Teacher'
 
 const Inicio: React.FC = () => {
 
-    const nomeUsuario = 'Nicole';
+    const nomeUsuario = 'Joana';
     const dataAtual = new Date();
 
     return (
