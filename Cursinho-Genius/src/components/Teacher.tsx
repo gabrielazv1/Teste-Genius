@@ -7,7 +7,7 @@ const Inicio: React.FC = () => {
     
     return (
         <div id='Teacher'>
-            <img id="garota_gif" src={Garota_GIF} alt="" />
+            <img id="garota_gif" src={Garota_GIF} draggable="false" alt="" />
         </div>
     );
 }
