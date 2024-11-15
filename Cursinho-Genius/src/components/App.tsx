@@ -1,10 +1,17 @@
-import Login from './Login'
-import '../App.css'
+import { useState } from 'react';
+import Login from './Login';
+import NavBar from './NavBar';
 
 function App() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLoginSuccess = () => {
+        setIsLoggedIn(true);
+    };
+
     return (
         <div>
-            <Login/>
+            {isLoggedIn ? <NavBar /> : <Login onLogin={handleLoginSuccess} />}
         </div>
     );
 }

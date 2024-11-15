@@ -1,16 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-import '../Login.css';
+import Associacao from '../assets/logoassociacao.png';
+import Logo from '../assets/Logo.png';
 
-function Login() {
+interface LoginProps {
+    onLogin: () => void;
+}
+
+function Login({ onLogin }: LoginProps) {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [mostrarSenha, setMostrarSenha] = useState(false);
 
-    const handleSubmit = async (event: React.FormEvent) => {
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const usuario = localStorage.getItem('usuario');
+        if (token && usuario) {
+            onLogin();
+        }
+    }, [onLogin]);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-    
+
         try {
             const response = await fetch('https://cursinho-genius.onrender.com/auth/login', {
                 method: 'POST',
@@ -19,22 +32,25 @@ function Login() {
                 },
                 body: JSON.stringify({ email, senha }),
             });
-    
-            console.log('Status:', response.status);  // Log do status da resposta
-            const data = await response.json();  // Obtenha a resposta em JSON
-            console.log('Response Body:', data); // Log do corpo da resposta
-    
+
+            const data = await response.json();
+
             if (response.ok) {
-                alert('Login efetuado');
+                // Armazena o token e o usuário no localStorage
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                
+                alert(`Bem vindo, ${data.usuario.nome}!`);
+                onLogin();
             } else {
-                alert(`Falha ao efetuar o login: ${data.message || 'Erro desconhecido'}`);
+                alert('Erro ao fazer login, verifique seu e-mail ou senha e tente novamente');
             }
+            
         } catch (error) {
             console.error('Erro ao fazer login', error);
             alert('Erro ao fazer login. Tente novamente');
         }
     };
-    
 
     return (
         <div id="login">
@@ -69,6 +85,7 @@ function Login() {
                             type="button"
                             onClick={() => setMostrarSenha(!mostrarSenha)}
                             className="senha-toggle"
+                            aria-label={mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}
                             style={{
                                 background: 'none',
                                 border: 'none',
@@ -87,6 +104,11 @@ function Login() {
                     </div>
                     <button type="submit">Fazer login</button>
                 </form>
+                <div id="logosGenius">
+                    <div id='userName'><p></p></div>
+                    <img src={Associacao} alt="Logo Associação" draggable="false" />
+                    <img src={Logo} alt="Logo Genius" draggable="false" />
+                </div>
             </section>
         </div>
     );
