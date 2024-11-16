@@ -13,7 +13,7 @@ function Cronograma() {
             <SemiCircleProgress
                     percentage={100}
                     size={{
-                        width: 400,
+                        width: 300,
                         height: 200,
                     }}
                     strokeWidth={15}

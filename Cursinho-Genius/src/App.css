@@ -166,19 +166,96 @@ body {
     grid-area: container-faltas;
 }
 
+/* Informações */
+
+#informacoes {
+    display: grid;
+    grid-template-areas: "header header header" "container-informacoes container-informacoes aside" "container-informacoes container-informacoes aside";
+    grid-template-columns: 3fr 3fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 1.5vw;
+    width: calc(100vw - 22vw);
+    height: 100vh;
+    margin-left: calc(20vw + 1.5vw);
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 1.5vw
+}
+
+#header {
+    grid-area: header;
+    font-size: 24px;
+}
+
+#container-informacoes {
+    grid-area: container-informacoes;
+    border-radius: 1.5vw;;
+    padding: 1vw;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+/* Informações text */
+
+.informacaoText {
+    width: 100%;
+    padding: 1vw;
+    border-radius: 1vw;
+    color: white;
+    display: flex;
+    gap: 1vw;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 300;
+    cursor: pointer;
+    overflow: hidden;
+    transition: max-height 1s ease; 
+}
+
+#container-informacoes .informacaoText:nth-child(odd) {
+    background-color: #6755AA;
+}
+
+#container-informacoes .informacaoText:nth-child(even) {
+    background-color: #00A69A;
+}
+
+.mainText {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    width: 100%;
+}
+
+.info {
+    font-size: 14px;
+    font-weight: 200;
+    text-align: justify;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.informacaoText.expanded {
+    max-height: 500px;
+}
+
+
 /* Cabecalho */
 
-#data {
+#header {
     color: #003D4E;
     display: flex;
     justify-content: space-between;
 }
 
-.header_tittle {
+.headerText {
     font-size: 1.8rem;
 }
 
-.header_subtittle {
+.headerSubtext {
     text-align: right;
     font-size: 1.2rem;
 }
@@ -247,22 +324,18 @@ input::placeholder, #cadastroEstado {
     color: #b6b6b6;
 }
 
-button {
+#loginButton {
     position: relative;
     background-color: #5DA499;
     height: 2.5rem; /* 40px */
     border: none;
     border-radius: 0.625rem; /* 10px */
     color: white;
-    font-size: 1.125rem; /* 18px */
+    font-size: 1.5vw; /* 18px */
     font-weight: 600;
     cursor: pointer;
     overflow: hidden;
     transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #4c8d83;
 }
 
 /* Professores */
@@ -322,16 +395,16 @@ aside {
     font-size: 10px;
 }
 #fundoCadastro {
-    position: fixed; /* Fixa o fundo na tela */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100vw; /* Ocupa toda a largura da tela */
-    height: 100vh; /* Ocupa toda a altura da tela */
-    background-color: rgba(0, 61, 78, 0.65); /* Fundo semitransparente */
-    display: flex; /* Centraliza o modal */
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 61, 78, 0.65); 
+    display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Garante que esteja acima de outros elementos */
+    z-index: 1000;
 }
 
 #preCadastro {

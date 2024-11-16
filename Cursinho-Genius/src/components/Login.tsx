@@ -170,7 +170,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                             />
                         </button>
                     </div>
-                    <button type="submit">Fazer login</button>
+                    <button type="submit" id='loginButton'>Fazer login</button>
                 </form>
                 <p
                     id="preCadastro"
@@ -270,7 +270,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                                     <input type="password" id="cadastroSenha" placeholder="Senha" />
                                     {formErrors.senha && <span>{formErrors.senha}</span>}
                                 </div>
-                                <button type="submit">Realizar Cadastro</button>
+                                <button type="submit" id='cadastroButton'>Realizar Cadastro</button>
                             </form>
                         </section>
                     </section>
