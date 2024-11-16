@@ -1,28 +1,27 @@
 import '../App.css';
-
 import { SemiCircleProgress } from 'react-semicircle-progressbar';
 
 function Cronograma() {
     return (
-        <div>
+        <div id='redacao'>
             <div className='textHeader'>
-            <i className="fa-solid fa-file"></i>
-                <p>Redações</p>
+                <i className='fa-solid fa-user-check'></i>
+                <p>Presença</p>
             </div>
             <section>
-            <SemiCircleProgress
-                    percentage={100}
+                <SemiCircleProgress
+                    percentage={2}
                     size={{
                         width: 400,
                         height: 200,
                     }}
                     strokeWidth={15}
-                    strokeColor="#00A69A"
+                    strokeColor="#6755AA"
                 />
             </section>
             <div className='boxFooter'>
-                    <p className='footerTittle'>Você possui <strong>1 redação</strong> não entregues</p>
-                    <p className='footerSubtittle'>Não atinja <strong>3 redações</strong>, pois isso poderá te fazer perder sua bolsa</p>
+                    <p className='footerTittle'>Você possui <strong>5% de falta</strong></p>
+                    <p className='footerSubtittle'>Não atinja <strong>25% de falta</strong>,  isso poderá te fazer perder sua bolsa</p>
             </div>
         </div>
     );

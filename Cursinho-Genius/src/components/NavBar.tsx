@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SenhoraGif from '../assets/Senhora_GIF.gif';
 import '../App.css';
 import Inicio from './Inicio';
@@ -8,6 +8,19 @@ import Configuracoes from './Configuracoes';
 
 const NavBar: React.FC = () => {
     const [selectedPage, setSelectedPage] = useState<string>('Ínicio');
+    const [isLogOffVisible, setIsLogOffVisible] = useState<boolean>(false);
+    const [usuarioNome, setUsuarioNome] = useState<string>('');
+    const [usuarioTipo, setUsuarioTipo] = useState<string>('');
+
+    useEffect(() => {
+        const nome = localStorage.getItem('usuarioNome');
+        const tipo = localStorage.getItem('usuarioTipo');
+        
+        if (nome && tipo) {
+            setUsuarioNome(nome);
+            setUsuarioTipo(tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase());
+        }
+    }, []);
 
     const renderPage = () => {
         switch (selectedPage) {
@@ -22,7 +35,17 @@ const NavBar: React.FC = () => {
             default:
                 return null;
         }
-    }
+    };
+
+    const logOff = () => {
+        try {
+            localStorage.clear();
+            console.log('authToken removido com sucesso.');
+            window.location.reload();
+        } catch (error) {
+            console.error('Erro ao realizar logoff:', error);
+        }
+    };
 
     return (
         <div>
@@ -49,11 +72,17 @@ const NavBar: React.FC = () => {
                 <div>
                     <img src={SenhoraGif} id="senhora_gif" draggable="false" alt="Senhora" />
                 </div>
-                <section className="student_profile">
+                {isLogOffVisible && (
+                    <section id='logOff' className="nav_button" onClick={logOff}>
+                        <i className="fa-solid fa-sign-out-alt"></i>
+                        <p>Sair</p>
+                    </section>
+                )}
+                <section className="student_profile" onClick={() => setIsLogOffVisible(!isLogOffVisible)}>
                     <div className="profile_pic"></div>
                     <div>
-                        <p className="profile_name">Mariana Lima Duarte</p>
-                        <p className="ocupation">Estudante</p>
+                        <p className="profile_name">{usuarioNome}</p>
+                        <p className="ocupation">{usuarioTipo}</p>
                     </div>
                 </section>
             </aside>
@@ -62,6 +91,6 @@ const NavBar: React.FC = () => {
             </main>
         </div>
     );
-}
+};
 
 export default NavBar;

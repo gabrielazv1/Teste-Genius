@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ nome, data }) => {
         <div>
             <section id="data">
                 <div>
-                    <p className='header_tittle'>Olá, <strong>{nome}</strong></p>
+                    <p className='header_tittle'>Olá, <strong>{nome}</strong>!</p>
                     <p className='header_subtittle'>Confira seu <strong>cronograma</strong> de aulas</p>
                 </div>
                 <div>

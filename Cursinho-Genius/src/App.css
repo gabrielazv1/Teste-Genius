@@ -20,7 +20,7 @@ body {
     background-color: #003d4e;
     color: white;
     padding: 2vw;
-    border-radius: 2vw;
+    border-radius: 1.5vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -68,6 +68,16 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5vw;
+    cursor: pointer;
+    padding: 0.5vw;
+    width: 106%;
+    transform: translateX(-0.5vw);
+    border-radius: 1vw;
+    transition: background-color 0.3s ease;
+}
+
+.student_profile:hover{
+    background-color: #002f3c;
 }
 
 .profile_pic {
@@ -87,6 +97,36 @@ body {
     font-weight: 200;
 }
 
+#logOff {
+    width: 80%;
+    max-width: 400px;
+    padding: 1vw 0;
+    border-radius: 0.7vw;
+    background-color: #00A69A;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 79%;
+    left: 10%;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+    box-sizing: border-box;
+}
+
+#logOff::after {
+    content: "";
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #00A69A;
+}
+
+
 /* Inicio */
 
 #inicio {
@@ -104,7 +144,7 @@ body {
 }
 
 #container-horario, #container-redacao, #container-faltas, aside {
-    border-radius: 2vw;
+    border-radius: 1.5vw;;
     padding: 1vw;
     background-color: white;
 }
@@ -126,14 +166,6 @@ body {
     grid-area: container-faltas;
 }
 
-aside {
-    grid-area: aside;
-    width: 17vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-}
-
 /* Cabecalho */
 
 #data {
@@ -151,7 +183,7 @@ aside {
     font-size: 1.2rem;
 }
 
-/* Barra de Progresso */
+/* Login */
 
 #logosGenius{
     display: flex;
@@ -181,7 +213,7 @@ img{
     background-color: white;
     width: 40vw;
     padding: 2.5rem; /* 40px */
-    border-radius: 1.875rem; /* 30px */
+    border-radius: 1.5vw; /* 30px */
     color: #003D4E;
     
 }
@@ -192,18 +224,18 @@ img{
     text-align: center;
 }
 
-form {
+#input form {
     display: flex;
     flex-direction: column;
-    gap: 0.9375rem; /* 15px */
+    gap: 1vw; /* 15px */
     width: 100%;
 }
 
-input {
+#input input {
     padding: 1rem; /* 20px */
     width: 100%;
     height: auto;
-    border-radius: 0.625rem; /* 10px */
+    border-radius: 0.5vw; /* 10px */
     background-color: #F7F7F5;
     border: none;
     outline: none;
@@ -211,7 +243,7 @@ input {
     font-weight: 500;
 }
 
-input::placeholder {
+input::placeholder, #cadastroEstado {
     color: #b6b6b6;
 }
 
@@ -231,4 +263,146 @@ button {
 
 button:hover {
     background-color: #4c8d83;
+}
+
+/* Professores */
+
+
+aside {
+    grid-area: aside;
+    width: 17vw;
+    height: 100%;
+}
+
+#teacher{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.6vw;
+}
+
+.textHeader{
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    color: #003D4E;
+    font-size: 20px;
+}
+
+.teacher_profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    width: 106%;
+    border-radius: 1vw;
+}
+
+.teacher_pic {
+    background-color: #6755AA;
+    height: 2.5vw;
+    width: 2.5vw;
+    border-radius: 50%;
+}
+
+/* Redações e Presença*/
+
+.boxFooter{
+    display: flex;
+    flex-direction: column;
+    gap: 0.3vw;
+    text-align: center;
+}
+
+.footerTittle{
+    font-size: 18px;
+}
+
+.footerSubtittle{
+    color: #9C9C9C;
+    font-size: 10px;
+}
+#fundoCadastro {
+    position: fixed; /* Fixa o fundo na tela */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Ocupa toda a largura da tela */
+    height: 100vh; /* Ocupa toda a altura da tela */
+    background-color: rgba(0, 61, 78, 0.65); /* Fundo semitransparente */
+    display: flex; /* Centraliza o modal */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Garante que esteja acima de outros elementos */
+}
+
+#preCadastro {
+    font-size: 14px;
+    cursor: pointer;
+    color: #003D4E;
+    text-decoration: underline;
+}
+
+#cadastro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5vw;
+    background-color: white;
+    width: 40vw;
+    padding: 2.5rem;
+    border-radius: 1.5vw;
+    color: #003D4E;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra ao modal */
+    z-index: 1100; /* Garante que esteja acima do fundo escurecido */
+}
+
+#cadastroTittle {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.cadastroInput {
+    display: flex;
+    gap: 0.5vw;
+}
+
+#cadastro input, #cadastroEstado {
+    padding: 0.7vw;
+    width: 100%;
+    height: auto;
+    border-radius: 0.5vw; /* 10px */
+    background-color: #F7F7F5;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+}
+
+#cadastro form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
+    width: 100%;
+}
+
+#cadastroButton {
+    background-color: #6755AA;
+    color: white;
+    padding: 0.7rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.5vw;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 0.5vw;
+}
+
+#cadastroButton:hover {
+    background-color: #574599;
+}
+
+form #cadastroNumero {
+    width: 5vw;
+}
+
+form #cadastroBairro{
+    width: 10vw;
 }
