@@ -20,6 +20,22 @@ const NavBar: React.FC = () => {
             setUsuarioNome(nome);
             setUsuarioTipo(tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase());
         }
+
+        // Função para fechar o logoff quando clicar fora da área do usuário
+        const handleClickOutside = (event: MouseEvent) => {
+            const profileSection = document.querySelector('.student_profile');
+            if (profileSection && !profileSection.contains(event.target as Node)) {
+                setIsLogOffVisible(false);
+            }
+        };
+
+        // Adiciona o event listener
+        document.addEventListener('click', handleClickOutside);
+
+        // Limpeza do event listener quando o componente for desmontado
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
     }, []);
 
     const renderPage = () => {

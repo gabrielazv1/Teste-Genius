@@ -327,15 +327,20 @@ input::placeholder, #cadastroEstado {
 #loginButton {
     position: relative;
     background-color: #5DA499;
-    height: 2.5rem; /* 40px */
+    height: auto;
     border: none;
-    border-radius: 0.625rem; /* 10px */
+    border-radius: 0.5vw; 
     color: white;
-    font-size: 1.5vw; /* 18px */
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     overflow: hidden;
+    padding: 1rem;
     transition: background-color 0.3s ease;
+}
+
+#loginButton:hover{
+    background-color: #028d83;
 }
 
 /* Professores */
@@ -350,6 +355,7 @@ aside {
 #teacher{
     display: flex;
     flex-direction: column;
+    height: 100%;
     justify-content: space-between;
     gap: 0.6vw;
 }
@@ -376,6 +382,14 @@ aside {
     width: 2.5vw;
     border-radius: 50%;
 }
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; /* Ajuste conforme necessário */
+}
+
 
 /* Redações e Presença*/
 
@@ -424,8 +438,8 @@ aside {
     padding: 2.5rem;
     border-radius: 1.5vw;
     color: #003D4E;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra ao modal */
-    z-index: 1100; /* Garante que esteja acima do fundo escurecido */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    z-index: 1100;
 }
 
 #cadastroTittle {
@@ -459,7 +473,7 @@ aside {
 #cadastroButton {
     background-color: #6755AA;
     color: white;
-    padding: 0.7rem;
+    padding: 0.8vw;
     font-size: 1rem;
     border: none;
     border-radius: 0.5vw;
@@ -478,4 +492,47 @@ form #cadastroNumero {
 
 form #cadastroBairro{
     width: 10vw;
+}
+
+/* Cronograma */
+
+tabela-cronograma {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .tabela-cronograma th,
+  .tabela-cronograma td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+  }
+
+  .tabela-cronograma th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+  }
+
+  .tabela-cronograma tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .tabela-cronograma tr:hover {
+    background-color: #eaeaea;
+  }
+
+.celula-vazia{
+  display: flex;
+  border-radius: 20px;
+  background-color: #bebec1;
+  padding: 5px;
+  text-align: center;
+  align-content: center;
+}
+
+.celula{
+  min-width: 100px;
 }

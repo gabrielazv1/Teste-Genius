@@ -5,7 +5,7 @@ import Teacher from './Teacher';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 
-const Inicio: React.FC = () => {
+const Informacoes: React.FC = () => {
     const dataAtual = new Date();
     // Mantendo o índice da div que deve estar aberta
     const [indiceAberto, setIndiceAberto] = useState<number | null>(null);
@@ -71,4 +71,4 @@ const Inicio: React.FC = () => {
     );
 };
 
-export default Inicio;
+export default Informacoes;

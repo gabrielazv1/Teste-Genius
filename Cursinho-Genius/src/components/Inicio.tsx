@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import Data from './Data';
 import Teacher from './Teacher';
-import Cronograma from './Cronograma';
+import Cronograma from './PagCronograma';
 import ProgressPresenca from './ProgressPresenca';
 import ProgressRedacoes from './ProgressRedacoes';
 

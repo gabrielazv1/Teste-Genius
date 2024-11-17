@@ -69,7 +69,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             console.error('Erro ao fazer login', error);
             alert('Erro ao fazer login. Tente novamente.');
         } finally {
-            setCarregando(false); // Oculta a tela de carregamento
+            setCarregando(false);
         }
     };
 
