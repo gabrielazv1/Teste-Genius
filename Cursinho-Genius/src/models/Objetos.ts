@@ -1,14 +1,14 @@
 interface CronogramaModel {
-    inicio: string, //"19:10"
-    fim: string, //"19:10"
+    inicio: string,
+    fim: string,
     horarios: Horario[]
 }
 
 class Horario {
     id: number
     dia: string
-    inicio: string //"19:10"
-    fim: string//"19:10"
+    inicio: string 
+    fim: string
     idDisciplina: number | null
     disciplina: Disciplina | null
 
@@ -20,11 +20,11 @@ class Horario {
         idDisciplina?: number | null;
     }, disciplina?: Disciplina | null) {
         this.id = options.id;
-        this.dia = options.dia || ""; // Default para uma string vazia
-        this.inicio = options.inicio || ""; // Default para uma string vazia
-        this.fim = options.fim || ""; // Default para uma string vazia
-        this.idDisciplina = options.idDisciplina || null; // Default para null
-        this.disciplina = disciplina || null; // Default para null
+        this.dia = options.dia || ""; 
+        this.inicio = options.inicio || "";
+        this.fim = options.fim || "";
+        this.idDisciplina = options.idDisciplina || null; 
+        this.disciplina = disciplina || null;
     }
 }
 

@@ -1,6 +1,6 @@
 import '../App.css';
 import Data from './Data';
-import Teacher from './Teacher';
+import Teacher from './Professores';
 
 const Editar: React.FC = () => {
     const dataAtual = new Date();

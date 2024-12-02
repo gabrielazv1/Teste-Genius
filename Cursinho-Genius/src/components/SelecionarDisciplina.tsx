@@ -6,14 +6,14 @@ import { Disciplina } from "../models/Objetos";
 function SelecionarDisciplina({
   onEmit,
 }: {
-  onEmit: (disciplina: Disciplina) => void; // Tipagem correta para onEmit
+  onEmit: (disciplina: Disciplina) => void;
 }) {
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
 
   useEffect(() => {
     const carregarDisciplinas = async () => {
       try {
-        const response = await fetch("http://localhost:8181/disciplina/listar");
+        const response = await fetch("https:/cursinho-genius.onrender.com/disciplina/listar");
         const dados = await response.json();
         setDisciplinas(dados);
       } catch (error) {
@@ -24,15 +24,15 @@ function SelecionarDisciplina({
   }, []);
 
   const sendMessageToParent = (disciplina: Disciplina) => {
-    onEmit(disciplina); // Envia a disciplina selecionada ao componente pai
+    onEmit(disciplina);
   };
 
   return (
-    <div>
-      <h1>Selecionar Disciplina:</h1>
+    <div id="selecionarDisciplina">
+      <h1>Selecionar <strong>disciplina:</strong></h1>
       {disciplinas.map((disciplina) => (
         <Button
-          sx={{ width: "45%", m: 1 }}
+          sx={{ width: "45%", m: 1, borderRadius: "0.5vw", border: "none", backgroundColor: "#00A69A", color: "white"}}
           variant="outlined"
           key={disciplina.id}
           onClick={() => sendMessageToParent(disciplina)}

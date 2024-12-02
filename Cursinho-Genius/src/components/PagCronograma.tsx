@@ -6,7 +6,7 @@ function PagCronograma() {
         <div>
             <div className='textHeader'>
                 <i className="fa-solid fa-clock"></i>
-                <p>Horários de aula</p>
+                <p>Horários de <strong>aula</strong></p>
             </div>
             <section>
                 <Cronograma/>

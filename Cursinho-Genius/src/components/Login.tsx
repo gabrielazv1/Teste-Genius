@@ -26,7 +26,6 @@ interface FormErrors {
     estado?: string;
     cep?: string;
     email?: string;
-    senha?: string;
 }
 
 const estadosBrasil = [
@@ -58,9 +57,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             const data = await response.json();
             if (response.ok) {
                 const usuario = data.usuario;
+                const token = data.token;
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('usuarioNome', usuario.nome);
                 localStorage.setItem('usuarioTipo', usuario.tipoUsuario);
+                localStorage.setItem('token', token);
+                localStorage.setItem('pendencia', usuario.nrPendenciasRedacao);
+                localStorage.setItem('totalChamada', usuario.nrChamadas);
+                localStorage.setItem('chamadaUsuario', usuario.nrFaltas);
                 onLogin();
             } else {
                 alert('Erro ao fazer login. Verifique suas credenciais.');
@@ -73,48 +77,74 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         }
     };
 
-    const handleCadastroSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleCadastroSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const nome = document.getElementById('cadastroNome') as HTMLInputElement;
-        const rg = document.getElementById('cadastroRG') as HTMLInputElement;
-        const cpf = document.getElementById('cadastroCPF') as HTMLInputElement;
-        const telefone = document.getElementById('cadastroTel') as HTMLInputElement;
-        const pai = document.getElementById('cadastroPai') as HTMLInputElement;
-        const mae = document.getElementById('cadastroMae') as HTMLInputElement;
-        const nacionalidade = document.getElementById('cadastroMora') as HTMLInputElement;
-        const naturalidade = document.getElementById('cadastroNasceu') as HTMLInputElement;
-        const endereco = document.getElementById('cadastroEndereco') as HTMLInputElement;
-        const numero = document.getElementById('cadastroNumero') as HTMLInputElement;
-        const bairro = document.getElementById('cadastroBairro') as HTMLInputElement;
-        const cidade = document.getElementById('cadastroCidade') as HTMLInputElement;
-        const cep = document.getElementById('cadastroCEP') as HTMLInputElement;
-        const email = document.getElementById('cadastroEmail') as HTMLInputElement;
-        const senha = document.getElementById('cadastroSenha') as HTMLInputElement;
-
-        if (
-            !nome?.value ||
-            !rg?.value ||
-            !cpf?.value ||
-            !telefone?.value ||
-            !pai?.value ||
-            !mae?.value ||
-            !nacionalidade?.value ||
-            !naturalidade?.value ||
-            !endereco?.value ||
-            !numero?.value ||
-            !bairro?.value ||
-            !cidade?.value ||
-            !cep?.value ||
-            !email?.value ||
-            !senha?.value ||
-            !estado
-        ) {
+    
+        const nome = (document.getElementById('cadastroNome') as HTMLInputElement).value;
+        const rg = (document.getElementById('cadastroRG') as HTMLInputElement).value;
+        const cpf = (document.getElementById('cadastroCPF') as HTMLInputElement).value;
+        const telefone = (document.getElementById('cadastroTel') as HTMLInputElement).value;
+        const pai = (document.getElementById('cadastroPai') as HTMLInputElement).value;
+        const mae = (document.getElementById('cadastroMae') as HTMLInputElement).value;
+        const nacionalidade = (document.getElementById('cadastroMora') as HTMLInputElement).value;
+        const naturalidade = (document.getElementById('cadastroNasceu') as HTMLInputElement).value;
+        const endereco = (document.getElementById('cadastroEndereco') as HTMLInputElement).value;
+        const numero = parseInt((document.getElementById('cadastroNumero') as HTMLInputElement).value, 10);
+        const bairro = (document.getElementById('cadastroBairro') as HTMLInputElement).value;
+        const cidade = (document.getElementById('cadastroCidade') as HTMLInputElement).value;
+        const cep = (document.getElementById('cadastroCEP') as HTMLInputElement).value;
+        const email = (document.getElementById('cadastroEmail') as HTMLInputElement).value;
+    
+        if (!nome || !rg || !cpf || !telefone || !pai || !mae || !nacionalidade || !naturalidade ||
+            !endereco || isNaN(numero) || !bairro || !cidade || !cep || !email || !estado) {
             alert('Alguns dados não foram preenchidos, insira para continuar');
             return;
         }
-        alert('Pré-cadastro realizado com sucesso!');
+    
+        const cadastroData = {
+            nome,
+            nomeMae: mae,
+            nomePai: pai,
+            cpf,
+            rg,
+            email,
+            nacionalidade,
+            naturalidade,
+            endereco,
+            numero,
+            bairro,
+            cidade,
+            cep,
+            telefone,
+        };
+    
+        setCarregando(true);
+    
+        try {
+            const response = await fetch('https://cursinho-genius.onrender.com/candidato/cadastro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(cadastroData),
+            });
+    
+            if (response.ok) {
+                alert('Cadastro realizado com sucesso!');
+                setExibirCadastro(false);
+            } else {
+                const errorData = await response.json();
+                console.error('Erro no cadastro:', errorData);
+                alert('Erro ao realizar o cadastro. Verifique os dados e tente novamente.');
+            }
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            alert('Erro ao realizar o cadastro. Tente novamente.');
+        } finally {
+            setCarregando(false);
+        }
     };
+    
 
     return (
         <div id="login">
@@ -220,9 +250,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                                 {formErrors.nome && <span>{formErrors.nome}</span>}
 
                                 <div className="cadastroInput">
-                                    <input type="text" id="cadastroRG" placeholder="RG" />
+                                    <input type="number" id="cadastroRG" placeholder="RG" />
                                     {formErrors.rg && <span>{formErrors.rg}</span>}
-                                    <input type="text" id="cadastroCPF" placeholder="CPF" />
+                                    <input type="number" id="cadastroCPF" placeholder="CPF" />
                                     {formErrors.cpf && <span>{formErrors.cpf}</span>}
                                     <input type="number" id="cadastroTel" placeholder="Telefone" />
                                     {formErrors.telefone && <span>{formErrors.telefone}</span>}
@@ -240,7 +270,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                                 <div className="cadastroInput">
                                     <input type="text" id="cadastroEndereco" placeholder="Endereço" />
                                     {formErrors.endereco && <span>{formErrors.endereco}</span>}
-                                    <input type="text" id="cadastroNumero" placeholder="Nº" />
+                                    <input type="number" id="cadastroNumero" placeholder="Nº" />
                                     {formErrors.numero && <span>{formErrors.numero}</span>}
                                     <input type="text" id="cadastroBairro" placeholder="Bairro" />
                                     {formErrors.bairro && <span>{formErrors.bairro}</span>}
@@ -261,15 +291,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                                         ))}
                                     </select>
                                     {formErrors.estado && <span>{formErrors.estado}</span>}
-                                    <input type="text" id="cadastroCEP" placeholder="CEP" />
+                                    <input type="number" id="cadastroCEP" placeholder="CEP" />
                                     {formErrors.cep && <span>{formErrors.cep}</span>}
                                 </div>
-                                <div className="cadastroInput">
-                                    <input type="email" id="cadastroEmail" placeholder="E-mail" />
+                                <input type="email" id="cadastroEmail" placeholder="E-mail" />
                                     {formErrors.email && <span>{formErrors.email}</span>}
-                                    <input type="password" id="cadastroSenha" placeholder="Senha" />
-                                    {formErrors.senha && <span>{formErrors.senha}</span>}
-                                </div>
                                 <button type="submit" id='cadastroButton'>Realizar Cadastro</button>
                             </form>
                         </section>

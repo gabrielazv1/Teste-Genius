@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import SelecionarDisciplina from "./SelecionarDisciplina";
-
 import Chip from "@mui/material/Chip";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@mui/material/Modal";
@@ -17,12 +16,27 @@ function Celula({
   podeEditar: boolean;
   onDisciplinaChange: (horario: Horario) => void;
 }) {
+
+  const celStyle = {
+    padding: 0,
+    margin: 0,
+    backgroundColor: 'transparent',
+    border: 'none', 
+    color: 'inherit',  
+    fontSize: 'inherit',
+    textAlign: 'center',
+    width: 'auto', 
+    height: 'auto',
+    borderRadius: 0
+  };
+
   const style = {
     position: "absolute",
+    borderRadius: "1vw",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 450,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
@@ -31,11 +45,8 @@ function Celula({
     gap: 2,
   };
 
-  const [open, setOpen] = useState(false); // Estado do Modal
-
-  const [disciplina, setDisciplina] = useState<Disciplina | null>(
-    horario.disciplina
-  ); // Disciplina que vai ser exibida ao carregar
+  const [open, setOpen] = useState(false);
+  const [disciplina, setDisciplina] = useState<Disciplina | null>(horario.disciplina);
 
   const handleDelete = (horario: Horario) => {
     setDisciplina(null);
@@ -51,7 +62,7 @@ function Celula({
         null
       )
     );
-  }; // Remover disciplina da célula
+  };
 
   const handleEmit = (novaDisciplina: Disciplina) => {
     handleAdd(horario, novaDisciplina);
@@ -81,13 +92,19 @@ function Celula({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Conteúdo do componente
   const renderContent = () => {
     if (disciplina != null) {
       return podeEditar ? (
-        <Chip label={disciplina.nome} onDelete={() => handleDelete(horario)} />
+        <Chip
+          label={disciplina.nome}
+          onDelete={() => handleDelete(horario)}
+          sx={{ ...celStyle, fontSize: '14px', '& .MuiSvgIcon-root': { fontSize: 17 } }} 
+        />
       ) : (
-        <Chip label={disciplina.nome} />
+        <Chip
+          label={disciplina.nome}
+          sx={{ ...celStyle, '& .MuiSvgIcon-root': { fontSize: 17 } }}
+        />
       );
     }
 
@@ -97,14 +114,16 @@ function Celula({
         label={"Adicionar"}
         deleteIcon={<AddIcon />}
         onDelete={handleOpen}
+        sx={{ ...celStyle, fontSize: '14px', '& .MuiSvgIcon-root': { fontSize: 17 }}}
       />
-    ) : null;
+    ) : (
+      <div className="placeholder">-----------</div>
+    );
   };
 
   return (
     <div>
       {renderContent()}
-
       <Modal
         open={open}
         onClose={handleClose}

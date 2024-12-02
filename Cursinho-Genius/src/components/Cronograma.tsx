@@ -1,8 +1,7 @@
-"use client";
 import React, { useState, useEffect } from "react";
 import Celula from "./Celula";
 import Button from "@mui/material/Button";
-import { Horario, CronogramaModel} from "../models/Objetos";
+import { Horario, CronogramaModel } from "../models/Objetos";
 
 const Cronograma = () => {
   const [editando, setEditando] = useState(false);
@@ -10,56 +9,46 @@ const Cronograma = () => {
   const [horariosCopia, setHorariosCopia] = useState<CronogramaModel[]>([]);
   const [alteracoes, setAlteracoes] = useState<Horario[]>([]);
 
-  useEffect(() => {
-    const carregarHorarios = async () => {
-      const response = await fetch("https://cursinho-genius.onrender.com/cronograma/carregar");
-      const dados = await response.json();
-      setHorarios(dados);
-      setHorariosCopia(dados); // Inicializa a cópia com os dados carregados
-    };
-      carregarHorarios();
-    }, []);
-
+  const userTipo = localStorage.getItem("usuarioTipo");
   const podeEditar = (pode: boolean) => {
-    setEditando(pode);
-    if (!pode) cancelarAlteracoes();
+    if (userTipo === "ADMIN") {
+      setEditando(pode);
+      if (!pode) cancelarAlteracoes();
+    }
   };
 
   const cancelarAlteracoes = () => {
-    setHorariosCopia(horarios); // Restabelece a cópia
-    setAlteracoes([]); // Limpa as alterações
+    setHorariosCopia(horarios);
+    setAlteracoes([]);
   };
 
   const salvarAlteracoes = async () => {
     try {
-        const response = await fetch("https://cursinho-genius.onrender.com/cronograma/salvar", {
-            method: "PUT",
-            headers: {"Content-Type": "application/json",},
-            body: JSON.stringify(alteracoes),
-        });
+      const response = await fetch("https://cursinho-genius.onrender.com/cronograma/salvar", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(alteracoes),
+      });
 
-        if (!response.ok) {
-            throw new Error("Erro ao salvar alterações.");
-        }
+      if (!response.ok) {
+        throw new Error("Erro ao salvar alterações.");
+      }
 
-        setEditando(!editando)
-        setAlteracoes([])
-        setHorarios(horariosCopia);
-
+      setEditando(!editando);
+      setAlteracoes([]);
+      setHorarios(horariosCopia);
     } catch (error) {
-        console.error("Erro durante a requisição:", error);
+      console.error("Erro durante a requisição:", error);
     }
-};
+  };
 
-
-  // Muda array de alterações e copia dos horarios
   const handleDisciplinaChange = (horario: Horario) => {
-    updateHorariosCopia(horario); // Atualiza a cópia do horário
+    updateHorariosCopia(horario);
 
     setAlteracoes((prevAlteracoes) => {
       const existingHorarioIndex = prevAlteracoes.findIndex(
         (h) => h.id === horario.id
-      ); // Achar o horario modificado nas lista de alterações
+      );
 
       if (existingHorarioIndex !== -1) {
         const updatedAlteracoes = [...prevAlteracoes];
@@ -70,19 +59,17 @@ const Cronograma = () => {
         };
         return updatedAlteracoes;
       } else {
-        return [...prevAlteracoes, horario]; // Adiciona novo horário ao conjunto que ja existia
+        return [...prevAlteracoes, horario];
       }
     });
   };
 
-  // Muda copia dos horarios
   const updateHorariosCopia = (updatedHorario: Horario) => {
-    // Atualiza a cópia do horário de maneira imutável
     const copiaAtualizada = horariosCopia.map((c) => ({
       ...c,
       horarios: c.horarios.map((h) => {
         if (h.id === updatedHorario.id) {
-          return { ...h, ...updatedHorario }; // Atualiza o horário correspondente
+          return { ...h, ...updatedHorario };
         }
         return h;
       }),
@@ -93,9 +80,19 @@ const Cronograma = () => {
 
   const diasDaSemana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
 
+  useEffect(() => {
+    const carregarHorarios = async () => {
+      const response = await fetch("https://cursinho-genius.onrender.com/cronograma/carregar");
+      const dados = await response.json();
+      setHorarios(dados);
+      setHorariosCopia(dados);
+    };
+    carregarHorarios();
+  }, []);
+
   return (
     <div>
-      <table className="tabela-cronograma">
+      <table className="tabela-cronograma" style={{ borderSpacing: '8px' }}>
         <thead>
           <tr>
             <th>Horário</th>
@@ -105,48 +102,79 @@ const Cronograma = () => {
           </tr>
         </thead>
         <tbody>
-          {horariosCopia.map((horaDia) => (
-            <tr key={`${horaDia.inicio}`}>
-              <td>{`${horaDia.inicio} - ${horaDia.fim}`}</td>
-              {horaDia.horarios.map((horario) => (
-                <td key={horario.id} className="celula">
-                  <Celula
-                    horario={horario}
-                    podeEditar={editando}
-                    onDisciplinaChange={handleDisciplinaChange}
-                  />
+          {horariosCopia.map((horaDia) => {
+            const linhaIntervalo = horaDia.inicio === "19:50" ? (
+              <tr key="intervalo">
+                <td colSpan={diasDaSemana.length + 1} style={{ backgroundColor: '#6755AA', color: 'white', textAlign: 'center' }}>
+                  Intervalo - 20h30 às 20h40
                 </td>
-              ))}
-            </tr>
-          ))}
+              </tr>
+            ) : null;
+            return (
+              <React.Fragment key={horaDia.inicio}>
+                <tr>
+                  <td>{horaDia.inicio}</td>
+                  {horaDia.horarios.map((horario) => (
+                    <td key={horario.id} className="celula">
+                      <Celula
+                        horario={horario}
+                        podeEditar={editando}
+                        onDisciplinaChange={handleDisciplinaChange}
+                      />
+                    </td>
+                  ))}
+                </tr>
+                {linhaIntervalo}
+              </React.Fragment>
+            );
+          })}
         </tbody>
-      </table>
-      <Button
-        variant="contained"
-        color="error"
-        onClick={() => podeEditar(!editando)}
-      >
-        {editando ? "Cancelar" : "Habilitar Edição"}
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => salvarAlteracoes()}
-      >
-        Salvar Alterações
-      </Button>
 
-      {alteracoes.map((alteracao: Horario) => (
-        <div key={alteracao.id}>
-          <div>ID horário: {alteracao.id}</div>
-          <div>
-            Disciplina:{" "}
-            {alteracao.disciplina
-              ? alteracao.disciplina.nome
-              : "Removeu disciplina"}
-          </div>
+
+      </table>
+
+      {userTipo === "ADMIN" && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => podeEditar(!editando)}
+            sx={{
+              backgroundColor: '#574599',
+              borderRadius: '7px',
+              textAlign: 'center',
+              color: 'white',
+              boxShadow: 'none',
+              '&:hover': {
+                backgroundColor: '#4a3e80',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            {editando ? "Cancelar Edição" : "Habilitar Edição"}
+          </Button>
+
+          {alteracoes.length > 0 && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => salvarAlteracoes()}
+              sx={{
+                backgroundColor: '#00A69A',
+                borderRadius: '7px',
+                textAlign: 'center',
+                color: 'white',
+                boxShadow: 'none',
+                '&:hover': {
+                  backgroundColor: '#028d83',
+                },
+              }}
+            >
+              Salvar Alterações
+            </Button>
+          )}
         </div>
-      ))}
+      )}
     </div>
   );
 };

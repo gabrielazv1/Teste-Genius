@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress'; // Importação do CircularProgress
+import CircularProgress from '@mui/material/CircularProgress';
 import Garota_GIF from '../assets/Garota_GIF.gif';
 import '../App.css';
 
@@ -9,7 +9,7 @@ interface Professor {
     disciplina: string;
 }
 
-const Teacher: React.FC = () => {
+const Professores: React.FC = () => {
     const [professores, setProfessores] = useState<Professor[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -56,4 +56,4 @@ const Teacher: React.FC = () => {
     );
 };
 
-export default Teacher;
+export default Professores;

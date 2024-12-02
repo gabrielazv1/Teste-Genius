@@ -1,15 +1,15 @@
 import Data from './Data';
 import Teacher from './Professores';
 
-const Configuracoes: React.FC = () => {
+const Presenca: React.FC = () => {
     const dataAtual = new Date();
 
     return (
         <div id="informacoes">
             <section id="header">
                 <div>
-                    <p className='headerText'>Configurações</p>
-                    <p className='headerSubtext'>Configure o site para uma <strong>melhor experiência</strong></p>
+                    <p className='headerText'>Presença</p>
+                    <p className='headerSubtext'>Visualize a presença de <strong>todos os alunos</strong></p>
                 </div>
                 <Data data={dataAtual} />
             </section>
@@ -20,4 +20,4 @@ const Configuracoes: React.FC = () => {
     );
 };
 
-export default Configuracoes;
+export default Presenca;

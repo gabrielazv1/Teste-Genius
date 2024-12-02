@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import '../App.css';
 import Data from './Data';
-import Teacher from './Teacher';
+import Teacher from './Professores';
 import Cronograma from './PagCronograma';
-import ProgressPresenca from './ProgressPresenca';
-import ProgressRedacoes from './ProgressRedacoes';
+import PreCadastro from './PreCadastro';
+import Faltas from './Faltas/Faltas';
+import ProgressRedacoes from './Redacao/ProgressRedacoes';
 
 const Inicio: React.FC = () => {
     const [usuarioNome, setUsuarioNome] = useState<string>('');
+    const [usuarioTipo, setUsuarioTipo] = useState<string>('');
     const dataAtual = new Date();
 
     useEffect(() => {
         const nome = localStorage.getItem('usuarioNome');
-        if (nome) {
-            // Pegando apenas o primeiro nome usando destructuring no array
+        const tipo = localStorage.getItem('usuarioTipo');
+
+        if (nome && tipo) {
             const [primeiroNome] = nome.split(' ');
             setUsuarioNome(primeiroNome);
+            setUsuarioTipo(tipo.charAt(0).toUpperCase() + tipo.slice(1).toLowerCase());
         }
     }, []);
 
@@ -29,8 +32,16 @@ const Inicio: React.FC = () => {
                 <Data data={dataAtual}/>
             </section>
             <section id="container-horario"><Cronograma /></section>
-            <section id="container-redacao"><ProgressRedacoes /></section>
-            <section id="container-faltas"><ProgressPresenca /></section>
+
+            {usuarioTipo === 'Admin' ? (
+                <section id="container-precadastro"><PreCadastro /></section>
+            ) : (
+                <>
+                    <section id="container-redacao"><ProgressRedacoes /></section>
+                    <section id="container-faltas"><Faltas/></section>
+                </>
+            )}
+
             <aside><Teacher /></aside>
         </div>
     );
