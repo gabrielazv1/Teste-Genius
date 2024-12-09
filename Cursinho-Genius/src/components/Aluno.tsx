@@ -1,6 +1,6 @@
 import Data from './Data';
-import ListarAlunos from './ListarAlunos/ListarAlunos';
 import Teacher from './Professores';
+import ListarAlunos from './ListarAlunos/ListarAlunos';
 
 const Aluno: React.FC = () => {
     const dataAtual = new Date();
@@ -16,7 +16,6 @@ const Aluno: React.FC = () => {
             </section>
             <section id="container-informacoes">
                 <ListarAlunos/>
-                <ListarAlunos />
             </section>
             <aside><Teacher /></aside>
         </div>

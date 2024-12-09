@@ -5,11 +5,10 @@ import "./Redacao.css";
 
 function ProgressBar() {
   const pendencia = localStorage.getItem("pendencia");
-  const [progress, setProgress] = useState<number>(
+  const [progress] = useState<number>(
     pendencia ? Number(pendencia) : 0
   );
   const totalParts = 3;
-  const palavra = progress > 1 ? "redações" : "redação";
   const redacoesAusentes = pendencia;
 
   return (
@@ -23,8 +22,8 @@ function ProgressBar() {
         <SemiCircleProgress
           percentage={(progress / totalParts) * 100}
           size={{
-            width: 300,
-            height: 200,
+            width: 500,
+            height: 180,
           }}
           fontStyle={{
             fontSize: "25px",
@@ -38,8 +37,6 @@ function ProgressBar() {
           hasBackground={true}
           bgStrokeColor="#eee"
         />
-      </div>
-      <div>
         <p className="redacao-pendente">{redacoesAusentes}/3</p>
       </div>
 

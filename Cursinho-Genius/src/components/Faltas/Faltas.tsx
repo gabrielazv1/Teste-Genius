@@ -10,7 +10,7 @@ function Faltas() {
 
   console.log(chamadas);
 
-  const [faltas, setFaltas] = useState<number>(chamadas);
+  const [faltas] = useState<number>(chamadas);
 
   return (
     <div className="container-faltas">
@@ -23,11 +23,11 @@ function Faltas() {
         <SemiCircleProgress
           percentage={Math.floor(faltas)}
           size={{
-            width: 300,
-            height: 200,
+            width: 500,
+            height: 180,
           }}
           fontStyle={{
-            fontSize: "25px",
+            fontSize: "20px",
             fontWeight: "700",
             fill: "#6755AA",
           }}
@@ -39,11 +39,9 @@ function Faltas() {
           bgStrokeColor="#eee"
         />
       </div>
-
       <p className="quantidade-faltas">
         Você possui <b className="faltas">{Math.floor(faltas)} de presença</b>{" "}
       </p>
-
       <p className="informacao-faltas">
         Não atinja 25% de falta, isso poderá te fazer perder sua bolsa
       </p>

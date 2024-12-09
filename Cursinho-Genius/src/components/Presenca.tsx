@@ -1,11 +1,11 @@
 import Data from './Data';
-import Teacher from './Professores';
+import ListagemDeFaltas from './ListagemDeFaltas';
 
 const Presenca: React.FC = () => {
     const dataAtual = new Date();
 
     return (
-        <div id="informacoes">
+        <div id="presenca">
             <section id="header">
                 <div>
                     <p className='headerText'>Presença</p>
@@ -13,9 +13,9 @@ const Presenca: React.FC = () => {
                 </div>
                 <Data data={dataAtual} />
             </section>
-            <section id="container-informacoes">
+            <section id="container-presenca">
+                <ListagemDeFaltas/>
             </section>
-            <aside><Teacher /></aside>
         </div>
     );
 };

@@ -1,7 +1,6 @@
 .container-alunos {
     display: flex;
     flex-direction: column;
-    padding: 20px;
     background-color: white;
     border-radius: 10px;
 }
@@ -17,21 +16,18 @@
 .data-container {
     display: flex;
     justify-content: flex-end;
-    margin-top: -20px;
     font-size: 14px;
 }
 
 .alunos-ativos {
     overflow-y: auto;
     max-height: 300px;
-    margin-top: 20px;
 }
 
 .aluno-tabela {
     width: 100%; 
     height: 100%;
     border-collapse: separate;
-    border-spacing: 0;
 }
 
 /* Estilo do cabeçalho */
@@ -90,5 +86,4 @@
 .alunos-ativos {
     max-height: 100%;
     overflow-y: auto;
-    margin-top: 20px;
 }

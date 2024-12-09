@@ -16,36 +16,60 @@ type studentsStatus = {
 };
 
 type ChamadaProps = {
-  finalizarChamada: () => void; // Função para finalizar a chamada
+  finalizarChamada: () => void; 
 };
 
 const Chamada: React.FC<ChamadaProps> = ({ finalizarChamada }) => {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   async function getActiveStudents(): Promise<any> {
-    try {
-      const response = await fetch(
-        "https://cursinho-genius.onrender.com/chamada/iniciar",
-        {
-          method: "GET",
+    if(sessionStorage.getItem("chamadaFoiFeita") != "1"){
+      try {
+        const response = await fetch(
+          "https://cursinho-genius.onrender.com/chamada/iniciar",
+          {
+            method: "GET",
+          }
+        );
+  
+        if (response.ok) {
+          const studentJson = await response.json();
+          const studentArray = transformToStudentList(studentJson);
+          sessionStorage.setItem("chamadaFoiFeita", "1");
+          buildChamada(studentArray);
+        } else {
+          alert("Chamada Já foi feita hoje!");
         }
-      );
-
-      if (response.ok) {
-        const studentJson = await response.json();
-        const studentArray = transformToStudentList(studentJson);
-        buildChamada(studentArray);
-      } else {
-        alert("Chamada Já foi feita hoje!");
+      } catch (error) {
+        console.error("Erro ao fazer chamada", error);
+        alert("Erro ao buscar alunos para chamada");
       }
-    } catch (error) {
-      console.error("Erro ao fazer chamada", error);
-      alert("Erro ao buscar alunos para chamada");
+    }
+    else{
+      try {
+        const response = await fetch(
+          "https://cursinho-genius.onrender.com/chamada/listar",
+          {
+            method: "GET",
+          }
+        );
+  
+        if (response.ok) {
+          const studentJson = await response.json();
+          const studentArray = transformToStudentList(studentJson);
+          buildChamada(studentArray);
+        } else {
+          alert("Chamada Já foi feita hoje!");
+        }
+      } catch (error) {
+        console.error("Erro ao fazer chamada", error);
+        alert("Erro ao buscar alunos para chamada");
+      }
     }
   }
 
   async function sendStudentsStatus(): Promise<any> {
-    let students = getIdOfAbsentStudents();
+    const students = getIdOfAbsentStudents();
     try {
       const response = await fetch('https://cursinho-genius.onrender.com/chamada/mudarPresenca', {
         method: 'PUT',
@@ -135,27 +159,27 @@ function transformToStudentList(data: any[]): Student[] {
 }
 
 function buildChamada(list: Student[]) {
-  let tbody = document.getElementById("corpo-tabela");
+  const tbody = document.getElementById("corpo-tabela");
   if (!tbody) throw "Elemento não encontrado.";
 
   tbody.innerHTML = "";
 
   list.forEach((item) => {
-    let tr = document.createElement("tr");
-    let tdNome = document.createElement("td");
-    let tdMatricula = document.createElement("td");
-    let tdStatus = document.createElement("td");
+    const tr = document.createElement("tr");
+    const tdNome = document.createElement("td");
+    const tdMatricula = document.createElement("td");
+    const tdStatus = document.createElement("td");
 
-    let statusLabel = document.createElement("label");
+    const statusLabel = document.createElement("label");
     statusLabel.classList.add("checkbox-label");
 
-    let statusInput = document.createElement("input");
+    const statusInput = document.createElement("input");
     statusInput.classList.add("checkbox-input");
     statusInput.setAttribute("type", "checkbox");
     statusInput.setAttribute("checked", "true");
     statusInput.setAttribute("id", item.id + "");
 
-    let statusSpan = document.createElement("span");
+    const statusSpan = document.createElement("span");
     statusSpan.classList.add("checkbox-custom");
 
     statusLabel.appendChild(statusInput);

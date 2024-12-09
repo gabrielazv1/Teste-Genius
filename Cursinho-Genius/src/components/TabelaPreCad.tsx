@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleXmark, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "@mui/material/Backdrop";
 import ModalAluno from "./ModalAluno";
+import CircularProgress from '@mui/material/CircularProgress';
 
 type Candidate = {
   id: number;
@@ -27,6 +28,7 @@ const TabelaPreCad = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true); // Estado para controle de carregamento
 
   async function getCandidates(): Promise<void> {
     try {
@@ -41,6 +43,8 @@ const TabelaPreCad = () => {
     } catch (error) {
       console.error("Erro ao exibir candidatos", error);
       alert("Ocorreu um erro ao buscar os candidatos");
+    } finally {
+      setIsLoading(false); // Finaliza o carregamento
     }
   }
 
@@ -107,60 +111,66 @@ const TabelaPreCad = () => {
 
   return (
     <div className="container-candidatos">
-      <div className="candidatos-ativos">
-        <table className="candidato-tabela">
-          <thead className="cabecario-tabela-candidatos">
-            <tr>
-              <th>Nome</th>
-              <th>CPF</th>
-              <th>Telefone</th>
-              <th>E-mail</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody className="tableDados">
-            {candidates.map((candidate) => (
-              <tr key={candidate.id}>
-                <td>{candidate.nome}</td>
-                <td>{candidate.cpf}</td>
-                <td>{candidate.telefone}</td>
-                <td>{candidate.email}</td>
-                <td className="acceptButton">
-                  <FontAwesomeIcon
-                    icon={faCircleCheck}
-                    style={{
-                      color: "#00A69A",
-                      cursor: "pointer",
-                      marginRight: "10px",
-                      fontSize: "20px",
-                    }}
-                    onClick={() => handleAccept(candidate.id)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faCircleXmark}
-                    style={{
-                      color: "#6755AA",
-                      cursor: "pointer",
-                      marginRight: "10px",
-                      fontSize: "20px",
-                    }}
-                    onClick={() => handleReject(candidate.id)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faCircleInfo}
-                    style={{
-                      color: "#003d4e",
-                      cursor: "pointer",
-                      fontSize: "20px",
-                    }}
-                    onClick={() => handleInfo(candidate)}
-                  />
-                </td>
+      {isLoading ? (
+        <div className="loading">
+          <CircularProgress sx={{ color: '#00A69A' }} />
+        </div>
+      ) : (
+        <div className="candidatos-ativos">
+          <table className="candidato-tabela">
+            <thead className="cabecario-tabela-candidatos">
+              <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Ações</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="tableDados">
+              {candidates.map((candidate) => (
+                <tr key={candidate.id}>
+                  <td>{candidate.nome}</td>
+                  <td>{candidate.cpf}</td>
+                  <td>{candidate.telefone}</td>
+                  <td>{candidate.email}</td>
+                  <td className="acceptButton">
+                    <FontAwesomeIcon
+                      icon={faCircleCheck}
+                      style={{
+                        color: "#00A69A",
+                        cursor: "pointer",
+                        marginRight: "10px",
+                        fontSize: "20px",
+                      }}
+                      onClick={() => handleAccept(candidate.id)}
+                    />
+                    <FontAwesomeIcon
+                      icon={faCircleXmark}
+                      style={{
+                        color: "#6755AA",
+                        cursor: "pointer",
+                        marginRight: "10px",
+                        fontSize: "20px",
+                      }}
+                      onClick={() => handleReject(candidate.id)}
+                    />
+                    <FontAwesomeIcon
+                      icon={faCircleInfo}
+                      style={{
+                        color: "#003d4e",
+                        cursor: "pointer",
+                        fontSize: "20px",
+                      }}
+                      onClick={() => handleInfo(candidate)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {showModal && selectedCandidate && (
         <Backdrop open={showModal} style={{ zIndex: 1300 }} onClick={closeModal}>

@@ -35,10 +35,32 @@ class Disciplina {
     constructor (id: number, nome:string){
         this.id = id;
         this.nome = nome;
-    }
-
-    
+    } 
 }
 
-export {Disciplina, Horario};
+class AnoLetivo{
+    id: number
+    ano: number
+    inicio:string
+    termino:string
+    diasLetivos: number
+    status: string
+
+    constructor (id: number, ano: number, inicio:string, termino:string, diasLetivos: number, status: string){
+        this.id = id;
+        this.ano = ano;
+        this.inicio = inicio;
+        this.termino = termino;
+        this.diasLetivos = diasLetivos;
+        this.status = status
+    }
+}
+
+const TipoUsuarioEnum = Object.freeze({
+    ADMIN: "ADMIN",
+    ALUNO: "ALUNO",
+    PROFESSOR: "PROFESSOR"
+  });
+
+export {Disciplina, Horario, TipoUsuarioEnum, AnoLetivo};
 export type {CronogramaModel};

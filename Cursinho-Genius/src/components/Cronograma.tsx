@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import Celula from "./Celula";
 import Button from "@mui/material/Button";
 import { Horario, CronogramaModel } from "../models/Objetos";
+import CircularProgress from '@mui/material/CircularProgress';  // Importando o CircularProgress
 
 const Cronograma = () => {
   const [editando, setEditando] = useState(false);
   const [horarios, setHorarios] = useState<CronogramaModel[]>([]);
   const [horariosCopia, setHorariosCopia] = useState<CronogramaModel[]>([]);
   const [alteracoes, setAlteracoes] = useState<Horario[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);  // Estado de carregamento
 
   const userTipo = localStorage.getItem("usuarioTipo");
+
   const podeEditar = (pode: boolean) => {
     if (userTipo === "ADMIN") {
       setEditando(pode);
@@ -86,52 +89,57 @@ const Cronograma = () => {
       const dados = await response.json();
       setHorarios(dados);
       setHorariosCopia(dados);
+      setIsLoading(false);  // Dados carregados, atualizar estado de carregamento
     };
     carregarHorarios();
   }, []);
 
   return (
     <div>
-      <table className="tabela-cronograma" style={{ borderSpacing: '8px' }}>
-        <thead>
-          <tr>
-            <th>Horário</th>
-            {diasDaSemana.map((dia) => (
-              <th key={dia}>{dia}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {horariosCopia.map((horaDia) => {
-            const linhaIntervalo = horaDia.inicio === "19:50" ? (
-              <tr key="intervalo">
-                <td colSpan={diasDaSemana.length + 1} style={{ backgroundColor: '#6755AA', color: 'white', textAlign: 'center' }}>
-                  Intervalo - 20h30 às 20h40
-                </td>
-              </tr>
-            ) : null;
-            return (
-              <React.Fragment key={horaDia.inicio}>
-                <tr>
-                  <td>{horaDia.inicio}</td>
-                  {horaDia.horarios.map((horario) => (
-                    <td key={horario.id} className="celula">
-                      <Celula
-                        horario={horario}
-                        podeEditar={editando}
-                        onDisciplinaChange={handleDisciplinaChange}
-                      />
-                    </td>
-                  ))}
+      {isLoading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <CircularProgress sx={{ color: '#00A69A' }} />
+        </div>
+      ) : (
+        <table className="tabela-cronograma" style={{ borderSpacing: '8px' }}>
+          <thead>
+            <tr>
+              <th>Horário</th>
+              {diasDaSemana.map((dia) => (
+                <th key={dia}>{dia}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {horariosCopia.map((horaDia) => {
+              const linhaIntervalo = horaDia.inicio === "19:50" ? (
+                <tr key="intervalo">
+                  <td colSpan={diasDaSemana.length + 1} style={{ backgroundColor: '#6755AA', color: 'white', textAlign: 'center' }}>
+                    Intervalo - 20h30 às 20h40
+                  </td>
                 </tr>
-                {linhaIntervalo}
-              </React.Fragment>
-            );
-          })}
-        </tbody>
-
-
-      </table>
+              ) : null;
+              return (
+                <React.Fragment key={horaDia.inicio}>
+                  <tr>
+                    <td>{horaDia.inicio}</td>
+                    {horaDia.horarios.map((horario) => (
+                      <td key={horario.id} className="celula">
+                        <Celula
+                          horario={horario}
+                          podeEditar={editando}
+                          onDisciplinaChange={handleDisciplinaChange}
+                        />
+                      </td>
+                    ))}
+                  </tr>
+                  {linhaIntervalo}
+                </React.Fragment>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
 
       {userTipo === "ADMIN" && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
