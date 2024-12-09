@@ -4,7 +4,6 @@ import Logo from '../assets/Logo Genius.png';
 import '../App.css';
 import Inicio from './Inicio';
 import Informacoes from './Informacoes';
-import Editar from './Editar';
 import Configuracoes from './Configuracoes';
 import Aluno from './Aluno';
 import Presenca from './Presenca';
@@ -46,8 +45,6 @@ const NavBar: React.FC = () => {
                 return <Inicio />;
             case 'Informações':
                 return <Informacoes />;
-            case 'Editar':
-                return <Editar />;
             case 'Configurações':
                 return <Configuracoes />;
             case 'Aluno':
@@ -185,7 +182,7 @@ const NavBar: React.FC = () => {
             {usuarioTipo === 'Admin' ? renderAdminNavbar() : renderDefaultNavbar()}
             <main>
                 {renderPage()}
-                {isChamadaVisible && <Chamada finalizarChamada={finalizarChamada} />} {/* Passa a função para o componente Chamada */}
+                {isChamadaVisible && <Chamada finalizarChamada={finalizarChamada} />}
             </main>
         </div>
     );
