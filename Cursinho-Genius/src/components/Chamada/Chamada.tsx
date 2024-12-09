@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import "./Chamada.css";
 
 type Student = {
@@ -10,56 +10,57 @@ type Student = {
   presenca: boolean;
   presencaTexto: string;
 };
+
 type studentsStatus = {
   id: number;
   presenca: boolean;
 };
 
 type ChamadaProps = {
-  finalizarChamada: () => void; 
+  finalizarChamada: () => void;
 };
 
 const Chamada: React.FC<ChamadaProps> = ({ finalizarChamada }) => {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  async function getActiveStudents(): Promise<any> {
-    if(sessionStorage.getItem("chamadaFoiFeita") != "1"){
+  const getCurrentDate = (): string => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  async function getActiveStudents(): Promise<void> {
+    const currentDate = getCurrentDate();
+    const apiUrl = `https://cursinho-genius.onrender.com/chamada/listar?data=${currentDate}`;
+
+    if (localStorage.getItem("chamadaFoiFeita") !== "1") {
       try {
         const response = await fetch(
-          "https://cursinho-genius.onrender.com/chamada/iniciar",
-          {
-            method: "GET",
-          }
+          "https://cursinho-genius.onrender.com/chamada/iniciar"
         );
-  
         if (response.ok) {
-          const studentJson = await response.json();
+          const studentJson: unknown[] = await response.json();
           const studentArray = transformToStudentList(studentJson);
-          sessionStorage.setItem("chamadaFoiFeita", "1");
+          localStorage.setItem("chamadaFoiFeita", "1");
           buildChamada(studentArray);
         } else {
-          alert("Chamada Já foi feita hoje!");
+          alert("Chamada já foi feita hoje!");
         }
       } catch (error) {
         console.error("Erro ao fazer chamada", error);
         alert("Erro ao buscar alunos para chamada");
       }
-    }
-    else{
+    } else {
       try {
-        const response = await fetch(
-          "https://cursinho-genius.onrender.com/chamada/listar",
-          {
-            method: "GET",
-          }
-        );
-  
+        const response = await fetch(apiUrl);
         if (response.ok) {
-          const studentJson = await response.json();
+          const studentJson: unknown[] = await response.json();
           const studentArray = transformToStudentList(studentJson);
           buildChamada(studentArray);
         } else {
-          alert("Chamada Já foi feita hoje!");
+          alert("Chamada já foi feita hoje!");
         }
       } catch (error) {
         console.error("Erro ao fazer chamada", error);
@@ -68,18 +69,18 @@ const Chamada: React.FC<ChamadaProps> = ({ finalizarChamada }) => {
     }
   }
 
-  async function sendStudentsStatus(): Promise<any> {
+  async function sendStudentsStatus(): Promise<void> {
     const students = getIdOfAbsentStudents();
     try {
-      const response = await fetch('https://cursinho-genius.onrender.com/chamada/mudarPresenca', {
-        method: 'PUT',
+      await fetch("https://cursinho-genius.onrender.com/chamada/mudarPresenca", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(students),
       });
     } catch (error) {
-      console.error('Erro ao retornar alunos da chamada.', error);
+      console.error("Erro ao retornar alunos da chamada.", error);
     }
   }
 
@@ -87,14 +88,13 @@ const Chamada: React.FC<ChamadaProps> = ({ finalizarChamada }) => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
-
     debounceRef.current = setTimeout(() => {
       getActiveStudents();
     }, 500);
   };
 
   useEffect(() => {
-    debounceFetchStudents(); 
+    debounceFetchStudents();
   }, []);
 
   return (
@@ -134,40 +134,50 @@ const Chamada: React.FC<ChamadaProps> = ({ finalizarChamada }) => {
 
 export default Chamada;
 
-function getIdOfAbsentStudents(): any {
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
+// Funções Auxiliares
 
-  const checkboxStates: studentsStatus[] = Array.from(checkboxes)
+function getIdOfAbsentStudents(): studentsStatus[] {
+  const checkboxes = document.querySelectorAll(
+    'input[type="checkbox"]'
+  ) as NodeListOf<HTMLInputElement>;
+
+  return Array.from(checkboxes)
     .filter((checkbox) => !checkbox.checked)
     .map((checkbox) => ({
       id: Number(checkbox.id),
       presenca: checkbox.checked,
     }));
-  return checkboxStates;
 }
 
-function transformToStudentList(data: any[]): Student[] {
-  return data.map((item) => ({
-    id: item.id,
-    data: item.data,
-    matricula: item.matricula,
-    aluno: item.aluno,
-    ano: item.ano,
-    presenca: item.presenca,
-    presencaTexto: item.presencaTexto,
-  }));
+function transformToStudentList(data: unknown[]): Student[] {
+  return (data as Student[])
+    .map((item) => ({
+      id: item.id,
+      data: item.data,
+      matricula: item.matricula,
+      aluno: item.aluno,
+      ano: item.ano,
+      presenca: item.presenca,
+      presencaTexto: item.presencaTexto,
+    }))
+    .sort((a, b) => a.aluno.localeCompare(b.aluno, "pt-BR"));
 }
 
 function buildChamada(list: Student[]) {
   const tbody = document.getElementById("corpo-tabela");
-  if (!tbody) throw "Elemento não encontrado.";
+  if (!tbody) throw new Error("Elemento não encontrado.");
 
   tbody.innerHTML = "";
 
   list.forEach((item) => {
     const tr = document.createElement("tr");
+
     const tdNome = document.createElement("td");
+    tdNome.textContent = item.aluno;
+
     const tdMatricula = document.createElement("td");
+    tdMatricula.textContent = String(item.matricula);
+
     const tdStatus = document.createElement("td");
 
     const statusLabel = document.createElement("label");
@@ -176,17 +186,14 @@ function buildChamada(list: Student[]) {
     const statusInput = document.createElement("input");
     statusInput.classList.add("checkbox-input");
     statusInput.setAttribute("type", "checkbox");
-    statusInput.setAttribute("checked", "true");
-    statusInput.setAttribute("id", item.id + "");
+    statusInput.checked = true;
+    statusInput.id = String(item.id);
 
     const statusSpan = document.createElement("span");
     statusSpan.classList.add("checkbox-custom");
 
     statusLabel.appendChild(statusInput);
     statusLabel.appendChild(statusSpan);
-
-    tdNome.textContent = item.aluno;
-    tdMatricula.textContent = item.matricula + "";
     tdStatus.appendChild(statusLabel);
 
     tr.appendChild(tdNome);

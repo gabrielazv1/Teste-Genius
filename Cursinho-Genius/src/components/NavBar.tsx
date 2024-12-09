@@ -138,10 +138,6 @@ const NavBar: React.FC = () => {
                     <i className="fa-solid fa-circle-info"></i>
                     <p>Informações</p>
                 </div>
-                <div className="nav_button" onClick={() => setSelectedPage('Editar')}>
-                    <i className="fa-solid fa-pen-to-square"></i>
-                    <p>Editar</p>
-                </div>
                 <div className="nav_button" onClick={() => setSelectedPage('Configurações')}>
                     <i className="fa-solid fa-gear"></i>
                     <p>Configurações</p>
