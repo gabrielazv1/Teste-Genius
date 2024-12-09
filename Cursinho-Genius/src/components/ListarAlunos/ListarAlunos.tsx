@@ -31,17 +31,20 @@ const ListarAlunos = () => {
   const [isLoading, setIsLoading] = useState(true);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Função para buscar alunos
   const getStudents = async () => {
     try {
       const response = await fetch(
-        "https://cursinho-genius.onrender.com/aluno/listar"
+        "https://cursinho-genius.onrender.com/aluno/listar?status=ATIVO"
       );
       if (!response.ok) {
         throw new Error("Erro ao buscar alunos");
       }
       const data: FormData[] = await response.json();
-      setStudents(data);
+      const sortedData = data.sort((a, b) => 
+        a.nome.localeCompare(b.nome, "pt-BR")
+      );
+  
+      setStudents(sortedData);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -52,6 +55,7 @@ const ListarAlunos = () => {
       setIsLoading(false);
     }
   };
+  
   
   const debounceFetchStudents = () => {
     if (debounceRef.current) clearTimeout(debounceRef.current);

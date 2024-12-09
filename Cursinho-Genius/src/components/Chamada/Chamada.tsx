@@ -134,8 +134,6 @@ const Chamada: React.FC<ChamadaProps> = ({ finalizarChamada }) => {
 
 export default Chamada;
 
-// Funções Auxiliares
-
 function getIdOfAbsentStudents(): studentsStatus[] {
   const checkboxes = document.querySelectorAll(
     'input[type="checkbox"]'
